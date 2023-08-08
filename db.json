@@ -1,0 +1,49 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "contacts": [
+    {
+      "id": "udATkjhy6PBZ",
+      "firstName": "Иван",
+      "lastName": "Иванов",
+      "email": "ivanov245@gmail.com",
+      "phone": "0667451823"
+    },
+    {
+      "firstName": "Егор",
+      "lastName": "Егоров",
+      "email": "egorov102@gmail.com",
+      "phone": "0681251845",
+      "id": "bn6Cvzo6qscg"
+    },
+    {
+      "id": "L5iWY4_FBjG7",
+      "firstName": "Василий",
+      "lastName": "Васильев",
+      "email": "vasiliev125@gmail.com",
+      "phone": "0961458743"
+    },
+    {
+      "id": "IFVenxT363ic",
+      "firstName": "Петр",
+      "lastName": "Петров",
+      "email": "petrov146@gmail.com",
+      "phone": "0676321148"
+    }
+  ]
+}

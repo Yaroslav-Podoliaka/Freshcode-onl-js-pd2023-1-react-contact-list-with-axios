@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
+import api from './contact-service';
 import ContactForm from "./components/ContactForm/ContactForm";
 import ContactList from "./components/ContactList/ContactList";
 import "./App.css";
@@ -17,38 +19,32 @@ function App() {
       phone: "",
     };
   }
-
-  function saveState(contacts) {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }
-
-  function restoreState() {
-    const data = localStorage.getItem("contacts");
-    return data ? JSON.parse(data) : [];
-  }
-
   useEffect(() => {
-    setContacts(restoreState());
-  }, []);
+    api.get('/')
+    .then(({data}) => {
+      data ? setContacts(data) : setContacts([]);
+    })
+  }, [])
 
   function selectContact(contact) {
     setContactForEdit(contact);
   }
 
   function createContact(contact) {
-    contact.id = Date.now();
-    const newContacts = [...contacts, contact];
-    setContacts(newContacts);
-    saveState(newContacts);
-    setContactForEdit(createEmptyContact());
+    contact.id = nanoid(12);
+    api.post('/', contact).then(({data}) => {
+    const newContacts = [...contacts, data];
+    setContacts(newContacts);  
+    })
   }
 
   function updateContact(contact) {
     const updateContacts = contacts.map((item) =>
       item.id === contact.id ? contact : item);
-    setContacts(updateContacts);
-    saveState(updateContacts);
-    setContactForEdit(contact);
+    api.put(`/${contact.id}`, contact)
+    .then(({data}) => {
+      setContacts(updateContacts)
+    })
   }
 
   function saveContact(contact) {
@@ -64,10 +60,11 @@ function App() {
   }
 
   function deleteContact(id) {
+    api.delete(`/${id}`)
+    .then(({statusText}) => console.log(statusText))
+    .catch((e) => console.log(e))
     const delContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(delContacts);
-    saveState(delContacts);
-    setContactForEdit(createEmptyContact());
   }
 
   return (
