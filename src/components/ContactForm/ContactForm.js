@@ -3,7 +3,7 @@ import './ContactForm.css';
 
 function ContactForm({ contactForEdit, onSubmit, onDelete }) {
   
-  const [contact, setContact] = useState({ ...contactForEdit });
+  const [contact, setContact] = useState(contactForEdit);
   
   useEffect(() => {
     setContact(contactForEdit);
@@ -36,11 +36,11 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
 
   function onFormSubmit(event) {
     event.preventDefault();
-    onSubmit({...contact});
+    onSubmit(contact);
   };
 
   function onContactDelete() {
-    onDelete({...contactForEdit.id});
+    onDelete(contact.id);
     setContact(createEmptyContact());
   };
 

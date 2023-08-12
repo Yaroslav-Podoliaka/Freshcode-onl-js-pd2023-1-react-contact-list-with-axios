@@ -24,6 +24,7 @@ function App() {
     .then(({data}) => {
       data ? setContacts(data) : setContacts([]);
     })
+    .catch((statusText) => console.log(statusText))
   }, [])
 
   function selectContact(contact) {
@@ -31,20 +32,21 @@ function App() {
   }
 
   function createContact(contact) {
-    contact.id = nanoid(12);
+    contact.id = nanoid();
     api.post('/', contact).then(({data}) => {
     const newContacts = [...contacts, data];
     setContacts(newContacts);  
     })
+    .catch((statusText) => console.log(statusText))
   }
 
   function updateContact(contact) {
-    const updateContacts = contacts.map((item) =>
-      item.id === contact.id ? contact : item);
     api.put(`/${contact.id}`, contact)
     .then(({data}) => {
-      setContacts(updateContacts)
+      setContacts(contacts.map((item) =>
+      item.id === contact.id ? contact : item))
     })
+    .catch((statusText) => console.log(statusText))
   }
 
   function saveContact(contact) {
@@ -62,7 +64,7 @@ function App() {
   function deleteContact(id) {
     api.delete(`/${id}`)
     .then(({statusText}) => console.log(statusText))
-    .catch((e) => console.log(e))
+    .catch((statusText) => console.log(statusText))
     const delContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(delContacts);
   }
