@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { 
+  addContact, 
+  delContact, 
+  changedContact 
+} from "../../store/slices/contactSlice";
 import './ContactForm.css';
 
-function ContactForm({ contactForEdit, onSubmit, onDelete }) {
+function ContactForm() {
   
-  const [contact, setContact] = useState({ ...contactForEdit });
+  const contactForEdit = useSelector((store) => 
+  store.mainContactList.contactForEdit);
+  const [contact, setContact] = useState(contactForEdit);
+  const dispatch = useDispatch();
   
   useEffect(() => {
     setContact(contactForEdit);
   }, [contactForEdit]);
-
-  function createEmptyContact() {
-    return {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    };
-  };
 
   function onInputChange(event) {
     const { name, value } = event.target;
@@ -36,12 +36,16 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
 
   function onFormSubmit(event) {
     event.preventDefault();
-    onSubmit({...contact});
+    if(!contact.id) {
+      dispatch(addContact(contact));
+    }else{
+      dispatch(changedContact(contact.id));
+    }
+    
   };
 
   function onContactDelete() {
-    onDelete({...contactForEdit.id});
-    setContact(createEmptyContact());
+    dispatch(delContact(contact.id));
   };
 
   return (

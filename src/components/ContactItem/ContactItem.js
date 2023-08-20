@@ -1,14 +1,22 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  delContact,
+  selectContact
+} from '../../store/slices/contactSlice';
 import './ContactItem.css';
 
-function ContactItem({ contact, onDelete, onEdit }) {
+function ContactItem({ contact }) {
+
+  const dispatch = useDispatch();
 
   function onItemDelete() {
-    onDelete(contact.id);
+    dispatch(delContact(contact.id));
   }
 
-  function onContactEdit() {
-    onEdit(contact);
+  function onContactEdit(event) {
+    event.stopPropagation();
+    dispatch(selectContact(contact));
   }
 
   return (
